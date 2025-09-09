@@ -1,4 +1,4 @@
-### backend/app/schemas/auth.py (Enhanced)
+# backend/app/schemas/auth.py (Enhanced, Updated)
 """Enhanced authentication schemas"""
 
 from pydantic import BaseModel, EmailStr, Field, validator
@@ -7,13 +7,13 @@ from ..models.user import UserRole
 from .user import UserResponse
 import re
 
- 
+
 class UserRegister(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=128)
     full_name: str = Field(..., min_length=1, max_length=255)
     username: Optional[str] = Field(None, min_length=3, max_length=100)
-    
+
     @validator('password')
     def validate_password(cls, v):
         if not re.search(r"[A-Z]", v):
@@ -28,7 +28,7 @@ class UserRegister(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
-    device_id: str
+    device_id: Optional[str] = None  
     remember_me: bool = False
 
 
@@ -46,7 +46,7 @@ class LoginResponse(BaseModel):
 
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
-    device_id: str
+    device_id: Optional[str] = None  # <-- optional for safety
 
 
 class TokenResponse(BaseModel):
@@ -59,7 +59,7 @@ class TokenResponse(BaseModel):
 
 
 class BiometricSetup(BaseModel):
-    device_id: str
+    device_id: Optional[str] = None  # <-- optional for setup
     biometric_type: str
     public_key: str
 

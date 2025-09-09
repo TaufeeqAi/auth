@@ -1,5 +1,6 @@
 # User DTOs
 # backend/app/schemas/user.py
+from uuid import UUID
 from pydantic import BaseModel, EmailStr, validator
 from typing import Optional
 from ..models.user import UserRole
@@ -56,13 +57,13 @@ class UserPasswordUpdate(BaseSchema):
 
 
 class UserInDB(UserBase, TimestampMixin):
-    id: str
+    id: UUID
     is_active: bool
     is_verified: bool
 
 
 class UserResponse(BaseSchema):
-    id: str
+    id: UUID
     email: EmailStr
     username: str
     full_name: str
